@@ -10,6 +10,7 @@ const dbUrl = process.env.DB_URL
 const app = express();
 const path = require('path')
 const ejsMate = require('ejs-mate');
+app.use(express.static(path.join(__dirname, 'public')))
 
 const User = require("./models/user")
 
@@ -50,6 +51,10 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.render('register');
+})
+
+app.get("/excercise", (req, res) => {
+    res.render('excercise')
 })
 
 app.post('/register', async (req, res) => {

@@ -10,14 +10,11 @@ const dbUrl = process.env.DB_URL
 const app = express();
 const path = require('path')
 const ejsMate = require('ejs-mate');
-<<<<<<< HEAD
-=======
 app.use(express.static(path.join(__dirname, 'public')))
 
-const User = require("./models/user")
 
 
->>>>>>> 8eca32e82d4e0519dc144b421ee78e73b0746d72
+
 const bcrypt = require('bcrypt');
 const session = require('express-session')
 

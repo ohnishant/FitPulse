@@ -1,0 +1,12 @@
+.navbar-brand {
+    font-size: 2rem !important;
+    font-style: normal
+}
+
+#cards .card {
+    margin: 10px
+}
+
+#cards div {
+    margin: 0 10px
+}

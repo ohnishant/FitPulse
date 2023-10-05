@@ -10,3 +10,14 @@
 #cards div {
     margin: 0 10px
 }
+
+.body-map__container{
+    display: flex;
+    justify-content: center;
+}
+
+.body-map__body {
+    height: 48em;
+    padding-top: 100px;
+    padding-right: 5em;
+}

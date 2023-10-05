@@ -63,6 +63,11 @@ app.get('/addpost', requireLogin, async (req, res) => {
 
 })
 
+
+app.get('/calculators', (req, res) => {
+    res.render("calculator");
+})
+
 app.post('/addpost', requireLogin, async (req, res) => {
 
     const { posttext } = req.body;
@@ -88,7 +93,7 @@ app.post('/addpost', requireLogin, async (req, res) => {
     // res.red
 })
 
-app.get('/feed', async (req, res) => {
+app.get('/feed', requireLogin, async (req, res) => {
     const allFeed1 = await Feed.find({});
     const allFeed = allFeed1.reverse();
     res.render("feed", { allFeed });
@@ -120,11 +125,11 @@ app.post('/login', async (req, res) => {
     const foundUser = await User.findAndValidate(username, password);
     if (foundUser) {
         req.session.user_id = foundUser._id
-        res.redirect('/home');
+        res.redirect('/feed');
 
     }
     else {
-        res.send('Try again')
+        res.redirect('/login')
     }
 })
 

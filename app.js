@@ -10,14 +10,21 @@ const dbUrl = process.env.DB_URL
 const app = express();
 const path = require('path')
 const ejsMate = require('ejs-mate');
+<<<<<<< HEAD
+=======
 app.use(express.static(path.join(__dirname, 'public')))
 
 const User = require("./models/user")
 
 
+>>>>>>> 8eca32e82d4e0519dc144b421ee78e73b0746d72
 const bcrypt = require('bcrypt');
 const session = require('express-session')
-app.use(session({ secret: 'notagoodsecret', resave: false, saveUninitialized: true }));
+
+const User = require("./models/user")
+const Feed = require('./models/feed');
+
+
 const requireLogin = (req, res, next) => {
     if (!req.session.user_id) {
         res.redirect('/login');
@@ -26,6 +33,7 @@ const requireLogin = (req, res, next) => {
         next();
     }
 }
+app.use(session({ secret: 'notagoodsecret', resave: false, saveUninitialized: true }));
 app.use(cors());
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -43,6 +51,50 @@ mongoose.connect(dbUrl)
 
 app.get('/home', (req, res) => {
     res.render("home")
+})
+
+
+
+app.get('/addpost', requireLogin, async (req, res) => {
+    const user = await User.findById(req.session.user_id);
+    if (!user) {
+        res.render('login')
+    }
+    else {
+        res.render('addpost')
+    }
+
+})
+
+app.post('/addpost', requireLogin, async (req, res) => {
+
+    const { posttext } = req.body;
+    const id = req.session.user_id;
+    if (!id) {
+        res.redirect('/login');
+    }
+    else {
+        const foundUser = await User.findById(id);
+        const username = foundUser.username;
+        const newpost = Feed({
+            name: username,
+            post: posttext
+        });
+
+
+        await newpost.save();
+        res.redirect('/feed');
+    }
+    // console.log(req.session.user_id)
+
+    // await Feed.insertOne({post:posttext});
+    // res.red
+})
+
+app.get('/feed', async (req, res) => {
+    const allFeed1 = await Feed.find({});
+    const allFeed = allFeed1.reverse();
+    res.render("feed", { allFeed });
 })
 
 app.get('/login', (req, res) => {
